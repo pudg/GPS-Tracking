@@ -10,6 +10,12 @@ export default {
           position: {
             lat: 34.049229, lng: -118.456320
           },
+        },
+        {
+          id: 'dfsldjl3t',
+          position: {
+            lat: 35.049229, lng: -118.456320
+          },
         }
       ]
     }
@@ -18,24 +24,20 @@ export default {
 </script>
 
 <template>
-    <div class="flex justify-between cols-12 md-6">
-        <div>
-            devices
-        </div>
-        <div class="bg-gray-100 h-full vue-map p-1" >
-            <GMapMap
-                :center="center"
-                :zoom="7"
-                map-type-id="terrain"
-            >
-            <GMapMarker
-                :key="marker.id"
-                v-for="marker in markers"
-                :position="marker.position"
-            />
-            </GMapMap>
-        </div>
+    <div class="bg-gray-100 h-full vue-map p-1" >
+        <GMapMap
+            :center="center"
+            :zoom="7"
+            map-type-id="terrain"
+        >
+        <GMapMarker
+            :key="marker.id"
+            v-for="marker in markers"
+            :position="marker.position"
+        />
+        </GMapMap>
     </div>
+
 </template>
 
 <style>

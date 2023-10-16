@@ -9,13 +9,13 @@
             </router-link>
             <div>
                 <router-link :to="{name: 'products'}" style="font-size: large;" class="inline-block p-4 h-full text-indigo-700 hover:bg-indigo-800 rounded hover:text-white font-extrabold">
-                    Products
+                    TODO: Products
                 </router-link>
                 <router-link :to="{name: 'tracking'}" style="font-size: large;" class="inline-block p-4 h-full text-indigo-700 hover:bg-indigo-800 rounded hover:text-white font-extrabold">
                     Tracking
                 </router-link>
                 <router-link to="/" style="font-size: large;" class="inline-block p-4 h-full text-indigo-700 hover:bg-indigo-800 rounded hover:text-white font-extrabold">
-                    Reviews
+                    TODO: Reviews
                 </router-link>
             </div>
         </header>

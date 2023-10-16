@@ -1,9 +1,7 @@
 <script setup>
 const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_638790418.jpeg'
-// const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_300774689.jpeg'
 import Auth from '../components/Auth.vue';
 import VLazyImage from "v-lazy-image";
-
 </script>
 
 <template>
@@ -38,7 +36,7 @@ import VLazyImage from "v-lazy-image";
     position: absolute;
     top: 45%;
     left: 50%;
-    border-radius: 4px;
+    border-radius: 16px;
     transform: translate(-50%, -50%);
 }
 </style>

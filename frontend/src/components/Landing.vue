@@ -19,7 +19,7 @@ import VLazyImage from "v-lazy-image";
             <h1 class="font-extrabold m-2">
                 Real-time GPS Tracking
             </h1>
-            <p>
+            <p class="font-bold m-2">
                 No Contracts   |   Cancel Anytime   |   Use It As You Need It
             </p>
             <ul>
@@ -34,7 +34,7 @@ import VLazyImage from "v-lazy-image";
                 </li>
                 
             </ul>
-            <router-link to="/register" style="font-size: large;" class="inline-block font-extrabold p-4 m-2 text-lg text-indigo-100 hover:text-white  transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">Register</router-link>
+            <router-link to="/login" style="font-size: large;" class="inline-block font-extrabold p-4 m-2 text-lg text-indigo-100 hover:text-white  transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">TODO: Register</router-link>
             <router-link to="/login" style="font-size: large;" class="inline-block font-extrabold p-4 m-2 text-lg text-indigo-100 hover:text-white  transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">Login</router-link>
         </div>
     </div>

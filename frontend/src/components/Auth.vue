@@ -3,18 +3,22 @@
 		<section class="forms">
             <div>
                 <form class="login" @submit.prevent="login">
-                    <h2>Login</h2>
-                    <input 
+                    <h1 class="p-2 font-extrabold">Login</h1>
+                    <input
+                        style="text-align: center;"
                         type="email" 
+                        class="border"
                         placeholder="Email address"
                         v-model="login_form.email" />
-                    <input 
+                    <input
+                        style="text-align: center;"
+                        class="border"
                         type="password" 
                         placeholder="Password" 
                         v-model="login_form.password" />
-                    <input 
-                        type="submit" 
-                        value="Login" />
+                    <button class="h-full font-extrabold p-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
+                        Login
+                    </button>
                 </form>
             </div>
 		</section>
@@ -56,7 +60,7 @@ export default {
 <style>
 .forms {
 	display: flex;
-	min-height: 100vh;
+	min-height: 25dvh;
 }
 
 form {

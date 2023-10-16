@@ -1,11 +1,11 @@
 <script>
 import GoogleMapLoader from '../components/GoogleMapLoader.vue'
-import Devices from '../components/Devices.vue';
+import DeviceList from '../components/DeviceList.vue';
 const mapConfig = {};
 export default {
     components: {
     GoogleMapLoader,
-    Devices
+    DeviceList
 },
     computed: {
         mapConfig() {
@@ -19,8 +19,8 @@ export default {
 
 <template>
     <div class="flex">
-        <div class="one-third-component border border-red-600">
-            <Devices />
+        <div class="one-third-component">
+            <DeviceList />
         </div>
         <div class="two-thirds-component border border-red-600">
             <GoogleMapLoader :mapConfig="mapConfig" api-key="AIzaSyAEzJXuznJHAQcdCBA_HcxdRYNuA3MJuDo">
@@ -34,13 +34,13 @@ export default {
 </template>
 <style>
 .one-third-component {
-  width: 33.33%; /* 2/3 of the screen width */
+  width: 25%; /* 2/3 of the screen width */
   height: 95vh; /* 100% of the viewport height */
   background-color: #f0f0f0; /* Background color, change as needed */
 }
 
 .two-thirds-component {
-  width: 66.66%; /* 2/3 of the screen width */
+  width: 75%; /* 2/3 of the screen width */
   height: 95vh; /* 100% of the viewport height */
   background-color: #f0f0f0; /* Background color, change as needed */
 }

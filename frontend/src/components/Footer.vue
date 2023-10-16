@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="bg-white shadow h-16 flex justify-between items-stretch">
+        <header class="px-16 bg-white shadow h-16 flex justify-between items-stretch">
             <router-link to="/" style="font-size: small;" class="inline-block p-4 h-full text-indigo-800 hover:bg-indigo-800 rounded hover:text-white font-extrabold">
                 OneStep
             </router-link>

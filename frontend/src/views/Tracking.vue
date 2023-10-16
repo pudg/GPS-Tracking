@@ -1,11 +1,13 @@
 <script>
 import GoogleMapLoader from '../components/GoogleMapLoader.vue'
 import DeviceList from '../components/DeviceList.vue';
+import Preferences from '../components/Preferences.vue';
 const mapConfig = {};
 export default {
     components: {
     GoogleMapLoader,
-    DeviceList
+    DeviceList,
+    Preferences
 },
     computed: {
         mapConfig() {
@@ -20,6 +22,7 @@ export default {
 <template>
     <div class="flex">
         <div class="one-third-component">
+            <Preferences />
             <DeviceList />
         </div>
         <div class="two-thirds-component border border-red-600">

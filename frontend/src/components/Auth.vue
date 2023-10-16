@@ -16,7 +16,7 @@
                         type="password" 
                         placeholder="Password" 
                         v-model="login_form.password" />
-                    <button class="h-full font-extrabold p-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
+                    <button class="h-full font-extrabold p-4 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
                         Login
                     </button>
                 </form>

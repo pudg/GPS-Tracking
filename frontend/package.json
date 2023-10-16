@@ -12,9 +12,14 @@
   "dependencies": {
     "@fawmi/vue-google-maps": "^0.9.79",
     "@googlemaps/js-api-loader": "^1.16.2",
+    "@vue/compat": "^3.3.4",
+    "boostrap": "^2.0.0",
+    "bootstrap-vue": "^2.23.1",
     "google-maps-api-loader": "^1.1.1",
+    "v-lazy-image": "^2.1.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
+    "vue-virtual-scroll-list": "^2.3.5",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
@@ -27,6 +32,6 @@
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
     "tailwindcss": "^3.3.3",
-    "vite": "^4.4.9"
+    "vite": "^4.4.11"
   }
 }

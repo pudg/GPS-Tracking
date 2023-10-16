@@ -24,7 +24,7 @@ export default {
 </script>
 
 <template>
-    <div class="bg-gray-100 h-full vue-map p-1" >
+    <div class="bg-gray-100 h-full vue-map" >
         <GMapMap
             :center="center"
             :zoom="7"
@@ -42,6 +42,6 @@ export default {
 
 <style>
 .vue-map-container .vue-map {
-    height: 1150px;
+    height: 95vh;
 }
 </style>

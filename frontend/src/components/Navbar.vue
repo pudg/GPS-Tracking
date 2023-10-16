@@ -4,15 +4,18 @@
 <template>
     <div>
         <header class="bg-white shadow h-16 flex justify-between items-stretch">
-            <router-link to="/" class="inline-block p-4 h-full hover:bg-teal-400 rounded hover:text-white font-bold">
-                NavTrek
+            <router-link to="/" style="font-size: large;" class="inline-block p-4 h-full text-indigo-800 hover:bg-indigo-800 rounded hover:text-white font-extrabold">
+                OneStep
             </router-link>
             <div>
-                <router-link :to="{name: 'tracking'}" class="inline-block p-4 h-full hover:bg-teal-400 rounded hover:text-white font-bold">
+                <router-link :to="{name: 'products'}" style="font-size: large;" class="inline-block p-4 h-full text-indigo-700 hover:bg-indigo-800 rounded hover:text-white font-extrabold">
+                    Products
+                </router-link>
+                <router-link :to="{name: 'tracking'}" style="font-size: large;" class="inline-block p-4 h-full text-indigo-700 hover:bg-indigo-800 rounded hover:text-white font-extrabold">
                     Tracking
                 </router-link>
-                <router-link :to="{name: 'login'}" class="inline-block p-4 h-full hover:bg-teal-400 rounded hover:text-white font-bold">
-                    Login
+                <router-link to="/" style="font-size: large;" class="inline-block p-4 h-full text-indigo-700 hover:bg-indigo-800 rounded hover:text-white font-extrabold">
+                    Reviews
                 </router-link>
             </div>
         </header>

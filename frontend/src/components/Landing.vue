@@ -1,20 +1,14 @@
 <script setup>
-const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_403261140.jpeg'
-import VLazyImage from "v-lazy-image";
+// const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_403261140.jpeg'
 </script>
 
 <template>
-    <div class="overlay-text-position">
-        <v-lazy-image
-            :src="URL"
-            style="width: 100%; height: 95vh; contain: content;"
-        />
+    <div>
         <div class="slogan-styles">
             <h1 class="font-extrabold">
                 Navigate with Confidence, Powered by OneStep
             </h1>
         </div>
-        <!--TODO: restore border property-->
         <div class="info-styles m-2" > 
             <h1 class="font-extrabold m-2">
                 Real-time GPS Tracking
@@ -67,5 +61,4 @@ import VLazyImage from "v-lazy-image";
     font-size: large;
     transform: translate(-50%, -50%);
 }
-
 </style>

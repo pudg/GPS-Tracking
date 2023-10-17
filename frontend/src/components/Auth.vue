@@ -3,20 +3,24 @@
 		<section class="forms">
             <div>
                 <form class="login" @submit.prevent="login">
-                    <h1 class="p-2 font-extrabold">Login</h1>
+                    <h1 class="p-1 font-extrabold text-center" style="height: 5vh;">
+						Login
+					</h1>
                     <input
-                        style="text-align: center;"
+                        style="text-align: center; height: 5vh;"
                         type="email" 
-                        class="border"
+                        class="border m-1"
                         placeholder="Email address"
                         v-model="login_form.email" />
                     <input
-                        style="text-align: center;"
-                        class="border"
+                        style="text-align: center; height: 5vh;"
+                        class="border m-1"
                         type="password" 
                         placeholder="Password" 
                         v-model="login_form.password" />
-                    <button class="h-full font-extrabold p-4 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
+                    <button
+						style="height: 7vh;"
+						class="font-extrabold p-4 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
                         Login
                     </button>
                 </form>
@@ -91,7 +95,7 @@ input {
 	background: none;
 
 	display: block;
-	width: 100%;
+	/* width: 100%; */
 	max-width: 400px;
 	margin: 0 auto;
 	font-size: 1.5rem;

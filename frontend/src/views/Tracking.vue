@@ -35,6 +35,7 @@ export default {
         </div>
     </div>
 </template>
+
 <style>
 .one-third-component {
   width: 25%; /* 2/3 of the screen width */

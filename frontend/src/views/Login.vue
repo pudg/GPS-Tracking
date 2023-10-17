@@ -1,15 +1,10 @@
 <script setup>
-const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_638790418.jpeg'
+const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_638790418.jpeg';
 import Auth from '../components/Auth.vue';
-import VLazyImage from "v-lazy-image";
 </script>
 
 <template>
-    <div class="login-overlay-text-position flex justify-center">
-        <v-lazy-image
-            :src="URL"
-            style="width: 100%; height: 95vh; contain: content;"
-        />
+    <div class="login-background-container">
         <div class="login-centered-text" style="background-color: aliceblue;">
             <Auth />
         </div>
@@ -38,6 +33,13 @@ import VLazyImage from "v-lazy-image";
     left: 50%;
     border-radius: 16px;
     transform: translate(-50%, -50%);
+}
+.login-background-container {
+	background-image: url('https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_638790418.jpeg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 95vh;
+	max-width: 100%;
 }
 </style>
 

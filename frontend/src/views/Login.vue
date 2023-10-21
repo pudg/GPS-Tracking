@@ -5,26 +5,12 @@ import Authenticate from '../components/Authenticate.vue';
 
 <template>
     <div class="login-background-container">
-        <div class="login-centered-text" style="background-color: aliceblue;">
-            <Authenticate />
-        </div>
+        <Authenticate />
     </div>
 
 </template>
 
 <style>
-.login-style {
-    width: 25vh;
-    height: 20vh;
-    border-radius: 50px;
-    background-color: rgb(238, 236, 236);
-}
-.login-overlay-text-position {
-    position: relative;
-    text-align: center;
-    color:black;
-    font-size: xx-large;
-}
 .login-centered-text {
     max-width: 33vh;
     max-height: 25vh;

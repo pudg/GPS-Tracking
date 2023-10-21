@@ -1,26 +1,23 @@
 <template>
-	<main class="login">
-		<section class="forms">
-            <div>
-                <form class="login" @submit.prevent="login">
-                    <h1 class="p-1 font-extrabold text-center" style="height: 5vh;">
+	<main class="test w-full">
+		<section class="forms bg-green-0 flex justify-center items-center">
+            <div class="bg-white rounded-lg">
+                <form class="login flex flex-col justify-center items-center h-full" @submit.prevent="login">
+                    <h1 class="p-2 font-extrabold text-center">
 						Login
 					</h1>
                     <input
-                        style="text-align: center; height: 5vh;"
                         type="email" 
-                        class="border m-1"
+                        class="border m-1 text-center"
                         placeholder="Email address"
                         v-model="login_form.email" />
                     <input
-                        style="text-align: center; height: 5vh;"
-                        class="border m-1"
+                        class="border m-1 text-center"
                         type="password" 
                         placeholder="Password" 
                         v-model="login_form.password" />
                     <button
-						style="height: 7vh;"
-						class="font-extrabold p-4 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
+						class="font-extrabold my-2 p-4 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
                         Login
                     </button>
                 </form>
@@ -62,13 +59,18 @@ export default {
 </script>
 
 <style>
+.test {
+	position: absolute;
+	top: 40%;
+}
 .forms {
 	display: flex;
 	min-height: 25dvh;
 }
 
 form {
-	/* flex: 1 1 0%; */
+	flex: 1 1 0%;
+	padding: 1rem;
 	/* padding: 8rem 1rem 1rem; */
 }
 

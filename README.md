@@ -11,7 +11,7 @@ Step into the backend directory of the project.
 
 Install required packages using `go`.
 
-
+    go mod tidy
 
 ## Frontend
 ### Install

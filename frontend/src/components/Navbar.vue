@@ -29,7 +29,7 @@ export default {
                 >
         <div class="flex items-center cursor-pointer">
             <span class="text-indigo-700 text-xl mr-1 mt-0">
-                <i class="bi bi-messenger"></i>
+                <i class="bi bi-geo-alt-fill"></i>
             </span>
             <h1 style="font-size: large;" class="inline-blockh-full text-indigo-700 rounded font-extrabold">One Step</h1>
         </div>

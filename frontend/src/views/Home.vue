@@ -1,10 +1,10 @@
 <script setup>
-import Landing from '../components/Landing.vue'
+import Hero from '../components/Hero.vue'
 </script>
 
 <template>
 	<div class="home-background-container">
-		<Landing />
+		<Hero />
 	</div>
 </template>
 

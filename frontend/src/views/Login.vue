@@ -1,12 +1,12 @@
 <script setup>
 const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_638790418.jpeg';
-import Auth from '../components/Auth.vue';
+import Authenticate from '../components/Authenticate.vue';
 </script>
 
 <template>
     <div class="login-background-container">
         <div class="login-centered-text" style="background-color: aliceblue;">
-            <Auth />
+            <Authenticate />
         </div>
     </div>
 

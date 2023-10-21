@@ -4,7 +4,7 @@ import Landing from '../components/Landing.vue'
 
 <template>
 	<div class="home-background-container">
-		<!-- <Landing /> -->
+		<Landing />
 	</div>
 </template>
 

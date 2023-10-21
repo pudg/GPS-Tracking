@@ -33,12 +33,12 @@ export default {
             </span>
             <h1 style="font-size: large;" class="inline-blockh-full text-indigo-700 rounded font-extrabold">One Step</h1>
         </div>
-        <span @click="toggleOpen()" class="absolute md:hidden right-6 top-1.5 cursor-pointer text-4xl">
+        <span @click="toggleOpen()" class="absolute md:hidden right-6 top-1.5 cursor-pointer text-4xl text-indigo-700">
             <i :class="[open ? 'bi bi-x': 'bi bi-filter-left']"></i>
         </span>
         <ul class="md:flex md:items-center md:px-0 px-4 md:pb-0 pb-6 md:static absolute
         bg-gray-100 md:w-auto w-full top-14 duration-700 ease-in"
-        :class="[open ? 'left-0': 'left-[-100%]']">
+        :class="[open ? 'right-0': 'right-[-100%]']">
             <li class="md:mx-4" v-for="link in links">
                 <router-link :to="{name: link.link}" style="font-size: large;" class="inline-block p-4 h-full text-indigo-700 hover:bg-indigo-800 rounded hover:text-white font-extrabold">
                     {{ link.name }}

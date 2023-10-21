@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Tracking from '../views/Tracking.vue'
 import Login from '../views/Login.vue'
 import Products from '../views/Products.vue'
+// import GPT from '../views/GPT.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

@@ -35,7 +35,7 @@ export default {
 </script>
 
 <template>
-    <div class="bg-red-500 w-full p-2 mb-4 h-1/6">
+    <div class="bg-red-500 w-full p-2 mb-1 h-1/6">
         Preferences
     </div>
 </template>

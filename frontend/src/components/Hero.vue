@@ -3,7 +3,7 @@
 
 <template>
     <div class="slogan-styles w-full flex flex-col text-white bg-green-0 text-center">
-        <div>
+        <div class="p-2">
             <h1 class="font-extrabold">
                 Navigate with Confidence, Powered by OneStep
             </h1>

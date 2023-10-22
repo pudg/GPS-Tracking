@@ -27,30 +27,27 @@ export default {
             justify-center items-center
             ">
             <Preferences />
-            <!-- <DeviceList /> -->
+            <DeviceList />
         </div>
         <div class="bg-pink-500 p-4 text-center w-full md:w-2/3 h-full md:h-screen">
-            MAP
-            <!-- <GoogleMapLoader :mapConfig="mapConfig" api-key="AIzaSyAEzJXuznJHAQcdCBA_HcxdRYNuA3MJuDo">
+            <GoogleMapLoader :mapConfig="mapConfig" api-key="AIzaSyAEzJXuznJHAQcdCBA_HcxdRYNuA3MJuDo">
                 <template slot-scope="{ google, map }">
                     {{ map }}
                     {{ google }}
                 </template>
-            </GoogleMapLoader> -->
+            </GoogleMapLoader>
         </div>
     </div>
 </template>
 
 <style>
 .one-third {
-  width: 25%; /* 2/3 of the screen width */
-  height: 95vh; /* 100% of the viewport height */
-  /* background-color: #f0f0f0; Background color, change as needed */
+  width: 25%;
+  height: 95vh;
 }
 
 .two-thirds {
-  width: 75%; /* 2/3 of the screen width */
-  height: 95vh; /* 100% of the viewport height */
-  /* background-color: #f0f0f0; Background color, change as needed */
+  width: 75%;
+  height: 95vh;
 }
 </style>

@@ -7,9 +7,9 @@ export default {
             if (!ws) {
                 return;
             }
-            ws.send(JSON.stringify({"nelson": "hey"}))
+            ws.send(JSON.stringify({ "nelson": "hey" }));
             return;
-        }
+        };
         onMounted((event) => {
             ws = new WebSocket("ws://localhost:8000/devices");
             if (event) {
@@ -17,25 +17,25 @@ export default {
             }
             ws.onopen = (event) => {
                 console.log("ws open");
-            }
+            };
             ws.onclose = (event) => {
                 console.log("ws closed");
                 ws = null;
-            }
+            };
             ws.onmessage = (event) => {
                 console.log("ws response: ", event.data);
-            }
+            };
             ws.onerror = (event) => {
                 console.log("err: ", event.data);
-            }
-        })
+            };
+        });
         return { sendMsg };
     },
 }
 </script>
 
 <template>
-    <div class="bg-red-500 w-full p-2">
+    <div class="bg-red-500 w-full p-2 mb-4 h-1/6">
         Preferences
     </div>
 </template>

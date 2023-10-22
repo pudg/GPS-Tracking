@@ -19,7 +19,7 @@ useInfiniteScroll(
 </script>
 
 <template>
-	<div v-bind="containerProps" class="h-1/3 md:h-screen p-2 rounded">
+	<div v-bind="containerProps" class="h-5/6 p-2 rounded bg-red-500">
 		<div v-bind="wrapperProps" class="max-w-sm mx-auto" style="max-width: 97%;">
 			<div 
 				v-for="{index, data} in list"

@@ -12,6 +12,10 @@
   "dependencies": {
     "@fawmi/vue-google-maps": "^0.9.79",
     "@googlemaps/js-api-loader": "^1.16.2",
+    "@headlessui/vue": "^1.7.16",
+    "@heroicons/react": "^2.0.18",
+    "@heroicons/vue": "^2.0.18",
+    "@vue-hero-icons/outline": "^1.7.2",
     "@vue/compat": "^3.3.4",
     "@vueuse/core": "^10.5.0",
     "boostrap": "^2.0.0",

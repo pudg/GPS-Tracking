@@ -9,7 +9,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(data, {
 useInfiniteScroll(
 	containerProps.ref,
 	() => {
-		data.value.push(...Array.from(Array(10).keys(), () => 'Morgan Freeman'))
+		data.value.push(...Array.from(Array(0).keys(), () => 'Morgan Freeman'))
 	},
 	{
 		distance: 10
@@ -19,16 +19,14 @@ useInfiniteScroll(
 </script>
 
 <template>
-	<div v-bind="containerProps" class="h-5/6 p-2 rounded bg-red-500">
-		<div v-bind="wrapperProps" class="max-w-sm mx-auto" style="max-width: 97%;">
+	<div v-bind="containerProps" class=" h-[93.5%] p-2 rounded">
+		<div v-bind="wrapperProps" class="max-w-sm mx-auto">
 			<div 
 				v-for="{index, data} in list"
 				:key="index"
 				class="rounded-lg h-[120px] flex flex-col px-4 justify-center bg-white mb-2
-				border-neutral-600 shadow"
-				style="width: 100%;"
-			>
-			<h2 class="mb-2 text-2xl">
+				border-neutral-600 shadow"			>
+			<h2 class="mb-2 text-2xl" style="width: 100%;">
 				Device: {{ index }}
 			</h2>
 			<p class="text-lg text-white ">
@@ -40,7 +38,5 @@ useInfiniteScroll(
 </template>
 
 <style>
-.h-screen {
-	height: 85vh;
-}
+
 </style>

@@ -24,7 +24,7 @@ export default {
 </script>
 
 <template>
-    <div class="bg-gray-100 h-screen vue-map" >
+    <div class="bg-gray-100" >
         <GMapMap
             :center="center"
             :zoom="7"

@@ -6,7 +6,7 @@ const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_40326114
 </script>
 
 <template>
-  <div class="bg-gray-100 h-full">
+  <div class="bg-gray-100 h-auto">
 	<Navbar />
 	<main>
 		<RouterView />

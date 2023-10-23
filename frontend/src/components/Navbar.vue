@@ -24,14 +24,14 @@ export default {
 </script>
 
 <template>
-    <div class="text-gray-300 py-3.5 px-6
-                shadow-md md:flex justify-between items-center"
-                >
+    <div class="
+            text-gray-300 py-3.5 px-6
+            shadow-md md:flex justify-between items-center">
         <div class="flex items-center cursor-pointer">
-            <span class="text-indigo-700 text-xl mr-1 mt-0">
+            <span class="text-indigo-700 text-xl mr-1">
                 <i class="bi bi-geo-alt-fill"></i>
             </span>
-            <h1 style="font-size: large;" class="inline-blockh-full text-indigo-700 rounded font-extrabold">One Step</h1>
+            <h1 style="font-size: large;" class="inline-block h-full text-indigo-700 rounded font-extrabold">One Step</h1>
         </div>
         <span @click="toggleOpen()" class="absolute md:hidden right-6 top-1.5 cursor-pointer text-4xl text-indigo-700">
             <i :class="[open ? 'bi bi-x': 'bi bi-filter-left']"></i>

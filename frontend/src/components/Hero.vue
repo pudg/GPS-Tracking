@@ -41,7 +41,7 @@
                 
             </ul> -->
             <div>
-                <router-link to="/login" style="font-size: large;"
+                <router-link to="/signup" style="font-size: large;"
                 class="inline-block font-extrabold p-4 m-1 text-lg
                 text-indigo-100 hover:text-white  transition-colors
                 duration-150 bg-indigo-700 rounded-lg focus:shadow-outline

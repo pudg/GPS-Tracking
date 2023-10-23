@@ -1,11 +1,12 @@
 <script setup>
 const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_638790418.jpeg';
-import Authenticate from '../components/Authenticate.vue';
+import { ref } from 'vue';
+import Register from '../components/Register.vue'
 </script>
 
 <template>
-    <div class="login-background-container">
-        <Authenticate />
+    <div class="signup-background-container">
+        <Register/>
     </div>
 </template>
 
@@ -19,8 +20,8 @@ import Authenticate from '../components/Authenticate.vue';
     border-radius: 16px;
     transform: translate(-50%, -50%);
 }
-.login-background-container {
-	background-image: url('https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_638790418.jpeg');
+.signup-background-container {
+	background-image: url('https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_362313093.jpeg');
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 95vh;

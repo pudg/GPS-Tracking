@@ -5,6 +5,8 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"onestep/nelson/backend/database"
+	"onestep/nelson/backend/models"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -23,15 +25,44 @@ func LoadAPIKey(key string) string {
 	return os.Getenv(key)
 }
 
-func Home(c *gin.Context) {
+func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"data": "TODO: Implement home handler...",
+		"data": "TODO: Implement LOGIN handler...",
 	})
+}
+
+func Register(c *gin.Context) {
+	var input models.CreateUser
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println("Unable to bind: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	hashedPassword, err := database.HashPassword(input.Password)
+	if err != nil {
+		log.Fatal("Unable to hash password: ", err)
+		return
+	}
+
+	user := models.User{
+		Email:    input.Email,
+		Password: hashedPassword,
+	}
+
+	if result := database.DB.Where("email = ?", user.Email).First(&user); result.Error != nil {
+		log.Println("CREATING USER")
+		database.DB.Create(&user)
+		c.JSON(http.StatusCreated, gin.H{"data": "Success"})
+		return
+	}
+
+	log.Println("USER EXISTS")
+	c.JSON(http.StatusBadRequest, gin.H{"data": "Email in use."})
 }
 
 func Devices(c *gin.Context) {
 	apiKey := LoadAPIKey("OS_API_KEY")
-	// fmt.Printf("Requesting: to %s\n", URL+apiKey)
 	resp, err := http.Get(URL + apiKey)
 	if err != nil {
 		log.Fatal(err)
@@ -42,10 +73,10 @@ func Devices(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	// data := string(body)
+	data := string(body)
 	// fmt.Println(data)
 	c.JSON(http.StatusOK, gin.H{
-		"data": body,
+		"data": data,
 	})
 }
 

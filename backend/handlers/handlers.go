@@ -26,15 +26,36 @@ func LoadAPIKey(key string) string {
 }
 
 func Login(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"data": "TODO: Implement LOGIN handler...",
-	})
+	var input models.CreateUser
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println("Bind: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{})
+		return
+	}
+
+	user := models.User{}
+	if result := database.DB.Where("email = ?", input.Email).First(&user); result.Error != nil {
+		//not found
+		log.Println("Invalid authentication: ", result.Error)
+		c.JSON(http.StatusOK, gin.H{"data": "Invalid email or password"})
+		return
+	}
+
+	if database.CheckPasswordHash(input.Password, user.Password) {
+		log.Println("Successful login: ", user.Email)
+		c.JSON(http.StatusOK, gin.H{"data": "Success"})
+		return
+	}
+
+	log.Println("Failed login attempty: ")
+	c.JSON(http.StatusOK, gin.H{"data": "Invalid email or password"})
 }
 
 func Register(c *gin.Context) {
 	var input models.CreateUser
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("Unable to bind: ", err)
+		log.Println("Bind: ", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

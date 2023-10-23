@@ -29,6 +29,7 @@
 <script>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
+import axios from 'axios';
 
 export default {
 	setup () {
@@ -42,17 +43,25 @@ export default {
             console.log(login_form.value.email);
             console.log(login_form.value.password);
 			// store.dispatch('login', login_form.value);
-		}
-
-		const register = () => {
-			// store.dispatch('register', register_form.value);
+			const data = {
+                email: login_form.value.email,
+                password: login_form.value.password
+            };
+			const headers = {
+				'Content-Type': 'application/json'
+			}
+			axios.post('http://localhost:8000/login', data, {headers: headers})
+			.then((resp) => {
+				console.log("Got back: ", resp.data);
+			})
+			.catch(err => console.error(err))
+			.finally(() => {})
 		}
 
 		return {
 			login_form,
 			register_form,
 			login,
-			register
 		}
 	}
 }

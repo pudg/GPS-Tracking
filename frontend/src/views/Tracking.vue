@@ -2,13 +2,22 @@
 import GoogleMapLoader from '../components/GoogleMapLoader.vue'
 import DeviceList from '../components/DeviceList.vue';
 import Preferences from '../components/Preferences.vue';
+import store from '../store';
 const mapConfig = {};
 export default {
     components: {
-    GoogleMapLoader,
-    DeviceList,
-    Preferences
-},
+        GoogleMapLoader,
+        DeviceList,
+        Preferences
+    },
+    data() {
+        return {
+            devices_track: 0,
+            all_devices: [],
+            track_devices: [],
+            localStore: store,
+        }
+    },
     computed: {
         mapConfig() {
             return {
@@ -16,6 +25,15 @@ export default {
             }
         },
     },
+    methods: {
+        trackDevices() {
+            this.track_devices = store.state.devices;
+        },
+        allDevices() {
+            store.dispatch('searchDevices');
+            this.all_devices = store.state.devices;
+        }
+    }
 }
 </script>
 
@@ -26,11 +44,14 @@ export default {
             w-full md:w-1/3 h-96 md:h-screen
             justify-center items-center
             ">
-            <Preferences />
-            <DeviceList />
+            <Preferences :allDevices="allDevices" :trackDevices="trackDevices" />
+            <DeviceList :info="localStore.state.devices"/>
         </div>
         <div class="p-1 text-center w-full md:w-2/3 h-full md:h-screen">
-            <GoogleMapLoader :mapConfig="mapConfig" api-key="AIzaSyAEzJXuznJHAQcdCBA_HcxdRYNuA3MJuDo">
+            <GoogleMapLoader
+            :trackDevices="trackDevices"
+            :markers="track_devices"
+            api-key="AIzaSyAEzJXuznJHAQcdCBA_HcxdRYNuA3MJuDo">
                 <template slot-scope="{ google, map }">
                     {{ map }}
                     {{ google }}

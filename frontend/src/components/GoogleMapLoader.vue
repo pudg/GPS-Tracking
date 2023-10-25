@@ -1,24 +1,15 @@
 <script>
+import store from '../store';
+console.log("initiState: ", store.state.devices);
 export default {
   name: 'App',
   data() {
     return {
       center: {lat: 34.049229, lng: -118.456320},
-      markers: [
-        {
-          id: 'dfsldjl3r',
-          position: {
-            lat: 34.049229, lng: -118.456320
-          },
-        },
-        {
-          id: 'dfsldjl3t',
-          position: {
-            lat: 35.049229, lng: -118.456320
-          },
-        }
-      ]
     }
+  },
+  props: {
+    markers: []
   }
 }
 </script>

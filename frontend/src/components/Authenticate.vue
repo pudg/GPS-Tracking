@@ -2,7 +2,7 @@
 	<main class="test w-full">
 		<section class="forms bg-green-0 flex justify-center items-center">
             <div class="bg-white rounded-lg">
-                <form class="login flex flex-col justify-center items-center h-full" @submit.prevent="login">
+                <form class="login flex flex-col justify-center items-center h-full" @submit.prevent="handleLoginClick">
                     <h1 class="p-2 font-extrabold text-center">
 						Login
 					</h1>
@@ -30,6 +30,8 @@
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios';
+import store from '../store'
+
 
 export default {
 	setup () {
@@ -37,31 +39,35 @@ export default {
 		const register_form = ref({});
 		const store = useStore();
 
-		const login = () => {
-            console.log('Authenticating...');
-            console.log(login_form.value)
-            console.log(login_form.value.email);
-            console.log(login_form.value.password);
-			// store.dispatch('login', login_form.value);
-			const data = {
-                email: login_form.value.email,
-                password: login_form.value.password
-            };
-			const headers = {
-				'Content-Type': 'application/json'
-			}
-			axios.post('http://localhost:8000/login', data, {headers: headers})
-			.then((resp) => {
-				console.log("Got back: ", resp.data);
-			})
-			.catch(err => console.error(err))
-			.finally(() => {})
-		}
+		const handleLoginClick = () => {
+			store.dispatch('userAuthenticate', {
+				email: login_form.value.email,
+				password: login_form.value.password
+			});
+            // console.log('Authenticating...');
+            // console.log(login_form.value)
+            // console.log(login_form.value.email);
+            // console.log(login_form.value.password);
+			// // store.dispatch('login', login_form.value);
+			// const data = {
+            //     email: login_form.value.email,
+            //     password: login_form.value.password
+            // };
+			// const headers = {
+			// 	'Content-Type': 'application/json'
+			// }
+			// axios.post('http://localhost:8000/login', data, {headers: headers})
+			// .then((resp) => {
+			// 	console.log("Got back: ", resp.data);
+			// })
+			// .catch(err => console.error(err))
+			// .finally(() => {})
+		};
 
 		return {
 			login_form,
 			register_form,
-			login,
+			handleLoginClick,
 		}
 	}
 }

@@ -1,4 +1,5 @@
 export default {
-    devices: ['Devices'],
-    loggedIn: false,
+    devices: [],
+    user: null,
+    trackActive: false
 }

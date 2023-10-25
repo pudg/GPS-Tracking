@@ -13,6 +13,10 @@ Install required packages using `go`.
 
     go mod tidy
 
+Launch the backend server.
+
+    go run .
+
 ## Frontend
 ### Install
 Step into frontend directory of the project.

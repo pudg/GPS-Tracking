@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export function userAuthenticate({ commit }, credentials) {
     console.log("Authenticating: ", credentials);
-    const data = {
+    const user = {
         email: credentials.email,
         password: credentials.password
     };
@@ -11,12 +11,17 @@ export function userAuthenticate({ commit }, credentials) {
         'Content-Type': 'application/json'
     };
 
-    axios.post('http://localhost:8000/login', data, {headers: headers})
+    axios.post('http://localhost:8000/login', user, {headers: headers})
     .then((resp) => {
         console.log("Login response: ", resp.data);
+        commit('setUser', user);
     })
     .catch(err => console.error(err))
     .finally(() => {})
+}
+
+export function userLogout({ commit }) {
+    commit('logout')
 }
 
 export function searchDevices({ commit }) {

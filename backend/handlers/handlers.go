@@ -17,7 +17,7 @@ import (
 var upgrader = websocket.Upgrader{}
 var URL = "https://track.onestepgps.com/v3/api/public/device?latest_point=true&api-key="
 
-func LoadAPIKey(key string) string {
+func LoadEnvKey(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Unable to load .env file: ", err)
@@ -30,13 +30,12 @@ func Login(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		log.Println("Bind: ", err)
-		c.JSON(http.StatusBadRequest, gin.H{})
+		c.JSON(http.StatusBadRequest, gin.H{"data": err.Error()})
 		return
 	}
 
 	user := models.User{}
 	if result := database.DB.Where("email = ?", input.Email).First(&user); result.Error != nil {
-		//not found
 		log.Println("Invalid authentication: ", result.Error)
 		c.JSON(http.StatusOK, gin.H{"data": "Invalid email or password"})
 		return
@@ -83,7 +82,7 @@ func Register(c *gin.Context) {
 }
 
 func Devices(c *gin.Context) {
-	apiKey := LoadAPIKey("OS_API_KEY")
+	apiKey := LoadEnvKey("OS_API_KEY")
 	resp, err := http.Get(URL + apiKey)
 	if err != nil {
 		log.Fatal(err)
@@ -95,17 +94,12 @@ func Devices(c *gin.Context) {
 	}
 
 	data := string(body)
-	// fmt.Println(data)
 	c.JSON(http.StatusOK, gin.H{
 		"data": data,
 	})
 }
 
 func DevicesOld(c *gin.Context) {
-	//TODO: Change to only accept requests from localhost:3000
-	upgrader.CheckOrigin = func(r *http.Request) bool {
-		return true
-	}
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Print("upgrade: ", err)
@@ -113,7 +107,7 @@ func DevicesOld(c *gin.Context) {
 	}
 
 	defer conn.Close()
-	apiKey := LoadAPIKey("OS_API_KEY")
+	apiKey := LoadEnvKey("OS_API_KEY")
 	fmt.Println(apiKey)
 	for {
 		msgType, msg, err := conn.ReadMessage()

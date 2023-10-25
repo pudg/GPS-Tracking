@@ -12,8 +12,12 @@ export function setDeviceList(state, devices) {
     state.devices = devs;
 }
 
-export function setAuthenticated(state, authenticated) {
+export function setUser(state, user) {
+    state.user = user;
+}
 
+export function unsetUser(state) {
+    state.user = null;
 }
 
 export function setTrack(status) {

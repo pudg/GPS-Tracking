@@ -10,6 +10,6 @@ func main() {
 	router := routes.InitRouter()
 	database.ConnectDatabase()
 	middleware.InitMiddleware(router)
-	routes.RegisterRoutes(router)
+	routes.InitRoutes(router)
 	router.Run(":8000")
 }

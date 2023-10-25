@@ -1,17 +1,28 @@
 package routes
 
 import (
+	"io"
 	"onestep/nelson/backend/handlers"
+	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
+func InitFileLogging() {
+	gin.DisableConsoleColor()
+	currentTime := time.Now()
+	f, _ := os.Create("logs/" + currentTime.Format("Mon 2006-01-2") + ".log")
+	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+}
+
 func InitRouter() *gin.Engine {
+	InitFileLogging()
 	router := gin.New()
 	return router
 }
 
-func RegisterRoutes(router *gin.Engine) {
+func InitRoutes(router *gin.Engine) {
 	router.POST("/login", handlers.Login)
 	router.POST("/register", handlers.Register)
 	router.GET("/devices", handlers.Devices)

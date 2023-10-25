@@ -13,7 +13,6 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-	fmt.Println("PROGRESS: Connecting to database...")
 	db, err := gorm.Open(sqlite.Open("onestep.db"), &gorm.Config{})
 
 	if err != nil {

@@ -28,10 +28,7 @@
 
 <script>
 import { ref } from 'vue'
-import { useStore } from 'vuex'
-import axios from 'axios';
-import store from '../store'
-
+import { useStore, mapState, mapActions } from 'vuex'
 
 export default {
 	setup () {
@@ -44,24 +41,6 @@ export default {
 				email: login_form.value.email,
 				password: login_form.value.password
 			});
-            // console.log('Authenticating...');
-            // console.log(login_form.value)
-            // console.log(login_form.value.email);
-            // console.log(login_form.value.password);
-			// // store.dispatch('login', login_form.value);
-			// const data = {
-            //     email: login_form.value.email,
-            //     password: login_form.value.password
-            // };
-			// const headers = {
-			// 	'Content-Type': 'application/json'
-			// }
-			// axios.post('http://localhost:8000/login', data, {headers: headers})
-			// .then((resp) => {
-			// 	console.log("Got back: ", resp.data);
-			// })
-			// .catch(err => console.error(err))
-			// .finally(() => {})
 		};
 
 		return {
@@ -69,6 +48,12 @@ export default {
 			register_form,
 			handleLoginClick,
 		}
+	},
+	computed: {
+		...mapState(['user']),
+	},
+	methods: {
+		...mapActions(['userLogout']),
 	}
 }
 </script>
@@ -86,7 +71,6 @@ export default {
 form {
 	flex: 1 1 0%;
 	padding: 1rem;
-	/* padding: 8rem 1rem 1rem; */
 }
 
 form.register {

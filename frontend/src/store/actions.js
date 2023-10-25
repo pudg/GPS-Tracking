@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from '../router';
 
 export function userAuthenticate({ commit }, credentials) {
     console.log("Authenticating: ", credentials);
@@ -14,7 +15,10 @@ export function userAuthenticate({ commit }, credentials) {
     axios.post('http://localhost:8000/login', user, {headers: headers})
     .then((resp) => {
         console.log("Login response: ", resp.data);
-        commit('setUser', user);
+        if (resp.status === 200) {
+            commit('setUser', user);
+            router.push({name: 'tracking'});
+        }
     })
     .catch(err => console.error(err))
     .finally(() => {})
@@ -27,7 +31,6 @@ export function userLogout({ commit }) {
 export function searchDevices({ commit }) {
     axios.get('http://localhost:8000/devices')
     .then((resp) => {
-        // console.log("Received: ", JSON.parse(resp.data.data));
         commit('setDeviceList', JSON.parse(resp.data.data));
     })
     .catch(err => console.error(err))

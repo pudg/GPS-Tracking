@@ -39,6 +39,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log(from);
+  console.log(to);
   const userLoggedIn = store.state.user !== null;
   if (to.meta.requiresAuth && !userLoggedIn) {
     next({name: 'login'});

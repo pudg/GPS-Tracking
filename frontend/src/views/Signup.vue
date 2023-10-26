@@ -1,14 +1,14 @@
-<script setup>
-const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_638790418.jpeg';
-import { ref } from 'vue';
-import Register from '../components/Register.vue'
-</script>
-
 <template>
     <div class="signup-background-container">
         <Register/>
     </div>
 </template>
+
+<script setup>
+const URL = 'https://gps-imagines.s3.us-east-2.amazonaws.com/AdobeStock_638790418.jpeg';
+import { ref } from 'vue';
+import Register from '../components/Register.vue'
+</script>
 
 <style>
 .login-centered-text {

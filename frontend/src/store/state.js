@@ -1,5 +1,8 @@
 export default {
     devices: [],
+    hiddenDevices: {},
+    trackedDevices: [],
     user: null,
-    trackActive: false
+    registrationError: "",
+    loginError: "",
 }

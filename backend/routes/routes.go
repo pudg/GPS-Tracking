@@ -2,6 +2,7 @@ package routes
 
 import (
 	"io"
+	"log"
 	"onestep/nelson/backend/handlers"
 	"os"
 	"time"
@@ -12,7 +13,11 @@ import (
 func InitFileLogging() {
 	gin.DisableConsoleColor()
 	currentTime := time.Now()
-	f, _ := os.Create("logs/" + currentTime.Format("Mon 2006-01-2") + ".log")
+	f, err := os.Create("logs/" + currentTime.Format("Mon 2006-01-2") + ".log")
+	if err != nil {
+		log.Fatal("Creating .log file: ", err.Error())
+		return
+	}
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 }
 

@@ -4,12 +4,12 @@
             OneStep
         </router-link>
         <div class="flex flex-col sm:flex-row">
-            <router-link to="/" style="font-size: small;" class="inline-block p-4 h-full text-indigo-700 hover:bg-indigo-800 rounded hover:text-white font-extrabold text-center">
-                TODO: Contact
-            </router-link>
             <a href="https://www.cookielaw.org/the-cookie-law/" style="font-size: small;" class="inline-block p-4 h-full text-indigo-700 hover:bg-indigo-800 rounded hover:text-white font-extrabold text-center">
                 Privacy
             </a>
         </div>
     </div>
 </template>
+
+<script setup>
+</script>

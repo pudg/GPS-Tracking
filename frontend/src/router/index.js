@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Tracking from '../views/Tracking.vue'
 import Login from '../views/Login.vue'
-import Products from '../views/Products.vue'
 import Signup from '../views/Signup.vue'
 import store from '../store';
 
@@ -21,11 +20,6 @@ const router = createRouter({
       meta: { requiresAuth: true},
     },
     {
-      path: '/products',
-      name: 'products',
-      component: Products
-    },
-    {
       path: '/login',
       name: 'login',
       component: Login
@@ -39,8 +33,6 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(from);
-  console.log(to);
   const userLoggedIn = store.state.user !== null;
   if (to.meta.requiresAuth && !userLoggedIn) {
     next({name: 'login'});

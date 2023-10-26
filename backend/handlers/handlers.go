@@ -37,7 +37,7 @@ func Login(c *gin.Context) {
 	user := models.User{}
 	if result := database.DB.Where("email = ?", input.Email).First(&user); result.Error != nil {
 		log.Println("Invalid authentication: ", result.Error)
-		c.JSON(http.StatusOK, gin.H{"data": "Invalid email or password"})
+		c.JSON(http.StatusBadRequest, gin.H{"data": "Invalid email or password"})
 		return
 	}
 

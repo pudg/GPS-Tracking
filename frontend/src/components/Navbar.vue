@@ -1,28 +1,3 @@
-<script>
-import Button from './Button.vue';
-import { ref } from 'vue';
-export default {
-    components: {
-        Button
-    },
-    setup() {
-        const open = ref(false);
-        const links = [
-            {name: 'Home', link: 'home'},
-            {name: 'Tracking', link: 'tracking'},
-            {name: 'Login', link: 'login'}
-        ];
-        
-        const toggleOpen = () => {
-            open.value = !open.value;
-        };
-
-        return { links, open, toggleOpen };
-    },
-
-};
-</script>
-
 <template>
     <div class="
             text-gray-300 py-3.5 px-6
@@ -49,5 +24,27 @@ export default {
     </div>
 </template>
 
-<style>
-</style>
+<script>
+import Button from './Button.vue';
+import { ref } from 'vue';
+export default {
+    components: {
+        Button
+    },
+    setup() {
+        const open = ref(false);
+        const links = [
+            {name: 'Home', link: 'home'},
+            {name: 'Tracking', link: 'tracking'},
+            {name: 'Login', link: 'login'}
+        ];
+        
+        const toggleOpen = () => {
+            open.value = !open.value;
+        };
+
+        return { links, open, toggleOpen };
+    },
+
+};
+</script>

@@ -20,6 +20,9 @@
 						class="font-extrabold my-2 p-4 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
                         Login
                     </button>
+					<p class="font-bold text-red-500">
+						{{ loginError }}
+					</p>
                 </form>
             </div>
 		</section>
@@ -50,7 +53,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['user']),
+		...mapState(['user', 'loginError']),
 	},
 	methods: {
 		...mapActions(['userLogout']),

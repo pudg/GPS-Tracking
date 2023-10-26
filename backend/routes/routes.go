@@ -28,11 +28,9 @@ func InitRouter() *gin.Engine {
 }
 
 func InitRoutes(router *gin.Engine) {
-	router.POST("/login", handlers.Login)
-	router.POST("/register", handlers.Register)
-	router.GET("/devices", handlers.Devices)
-	router.GET("/preferences/:id", handlers.Preferences)
-	router.POST("/preferences", handlers.CreatePreferences)
-	router.PUT("/preferences/:id", handlers.UpdatePreferences)
-	router.DELETE("/preferences/:id", handlers.DeletePreferences)
+	router.POST("/api/login", handlers.Login)
+	router.POST("/api/register", handlers.Register)
+	router.GET("/api/devices", handlers.Devices)
+	router.PUT("/api/preferences", handlers.UpdatePreferences)
+	router.GET("/api/test", handlers.Test)
 }

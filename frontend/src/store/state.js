@@ -5,4 +5,5 @@ export default {
     user: null,
     registrationError: "",
     loginError: "",
+    sortAsc: false,
 }

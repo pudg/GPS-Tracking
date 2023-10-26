@@ -69,3 +69,22 @@ export function setDeviceImage(state, device) {
         }
     }
 }
+
+export function setDeviceSort(state) {
+    let sortedDevs = [];
+    if (state.sortAsc) {
+        sortedDevs = state.devices.sort((d1, d2) => {
+            if (d1.model < d2.model) return -1;
+            if (d1.model > d2.model) return 1;
+            return 0;
+        });
+    } else {
+        sortedDevs = state.devices.sort((d1, d2) => {
+            if (d1.model < d2.model) return 1;
+            if (d1.model > d2.model) return -1;
+            return 0;
+        });
+    }
+    state.devices = sortedDevs;
+    state.sortAsc = !state.sortAsc;
+}

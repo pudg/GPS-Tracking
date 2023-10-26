@@ -10,9 +10,11 @@
 <script>
 import { ref, onMounted } from 'vue';
 import store from '../store'
+import { useStore, mapState, mapActions } from 'vuex'
 export default {
     setup() {
         let ws = ref(null);
+        const store = useStore();
         const sendMsg = () => {
             if (!ws) {
                 return;
@@ -22,11 +24,16 @@ export default {
         };
 
         const handleSortClick = () => {
-            console.log("Changing sort...");
+            store.dispatch('deviceSort');
         };
 
         const savePreferences = () => {
-            console.log("Saving preferences...");
+            const preferences = {
+                user: store.state.user,
+                devices: store.state.devices,
+                sort: store.state.sortAsc
+            };
+            store.dispatch('saveUserPreferences', preferences);
         };
 
         onMounted((event) => {

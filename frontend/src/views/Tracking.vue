@@ -55,8 +55,6 @@ export default {
     methods: {
         ...mapActions(['userAuthenticate']),
         trackDevices() {
-            console.log("Updating markers...");
-            console.log(store.state.trackedDevices);
             // this.track_devices = store.state.devices;
             store.commit('setTrackedDevices', store.state.devices)
         },
@@ -65,7 +63,7 @@ export default {
             this.all_devices = store.state.devices;
         },
         updateTrackedDevices(id) {
-            console.log("Hiding device: ", id);
+            // console.log("Hiding device: ", id);
         }
     },
 }

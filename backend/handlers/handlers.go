@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
+	"gorm.io/gorm"
 )
 
 var upgrader = websocket.Upgrader{}
@@ -128,6 +129,40 @@ func DevicesOld(c *gin.Context) {
 	})
 }
 
+func UpdatePreferences(c *gin.Context) {
+	var input models.CreateUser
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println("Bind: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	user := models.User{}
+	if result := database.DB.Where("email = ?", input.Email).First(&user); result.Error != nil {
+		log.Println("Invalid email: ", result.Error)
+		c.JSON(http.StatusBadRequest, gin.H{"data": "Invalid email or password"})
+		return
+	}
+
+	user.Preference.SortAsc = input.Preference.SortAsc
+	user.Preference.Devices = input.Preference.Devices
+	database.DB.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
+	c.JSON(http.StatusOK, gin.H{"data": user})
+}
+
+func Test(c *gin.Context) {
+	var users []models.User
+
+	if err := database.DB.Model(&models.User{}).Preload("Preference").Find(&users).Error; err != nil {
+		log.Panicln("Finding users: ", err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": users,
+	})
+}
+
 func Preferences(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": "TODO: Implement Preferences GET...",
@@ -135,15 +170,7 @@ func Preferences(c *gin.Context) {
 }
 
 func CreatePreferences(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"data": "TODO: Implement Preferences POST...",
-	})
-}
-
-func UpdatePreferences(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"data": "TODO: Implement Preferences PUT...",
-	})
+	c.JSON(http.StatusOK, gin.H{"data": "TODO: Implemente Preferences POST..."})
 }
 
 func DeletePreferences(c *gin.Context) {

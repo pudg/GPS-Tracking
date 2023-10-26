@@ -17,12 +17,10 @@ func ConnectDatabase() {
 
 	if err != nil {
 		log.Fatal("Unable to connect to database: ", err)
-		return
 	}
 
-	if err := db.AutoMigrate(&models.Preference{}, &models.User{}); err != nil {
+	if err := db.AutoMigrate(&models.User{}, &models.Preference{}); err != nil {
 		log.Fatal("Unable to migrate models: ", err)
-		return
 	}
 
 	DB = db

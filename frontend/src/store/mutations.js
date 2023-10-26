@@ -9,7 +9,8 @@ export function setDeviceList(state, devices) {
                 lat: device.latest_accurate_device_point.lat,
                 lng: device.latest_accurate_device_point.lng,
             },
-            hide: false
+            hide: false,
+            imagePreview: null,
         }
     });
     state.devices = devs;
@@ -57,5 +58,14 @@ export function setHiddenDevices(state, id) {
         target.hide = !target.hide;
         state.trackedDevices = updatedDevices;
         state.hiddenDevices[id] = target;
+    }
+}
+
+export function setDeviceImage(state, device) {
+    for (let dev of state.devices) {
+        if (dev.id == device.id) {
+            dev.imagePreview = device.image;
+            break;
+        }
     }
 }

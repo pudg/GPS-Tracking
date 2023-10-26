@@ -1,6 +1,7 @@
 <template>
 	<div v-bind="containerProps" class=" h-[93.5%] p-2 rounded">
-		<div v-bind="wrapperProps" class="max-w-sm mx-auto">
+		<!--TODO: add back v-bind="wrapperProps"-->
+		<div  class="max-w-sm mx-auto">
 			<div 
 				v-for="item in info"
 
@@ -17,9 +18,13 @@
 						Lat: {{ item.position.lat.toFixed(3) }}
 						Long: {{ item.position.lng.toFixed(3) }}
 					</p>
-					<button @click="toggleHide(item.id)" class="border bg-indigo-500 hover:bg-indigo-700 text-white p-1">
-						{{ !item.hide ? "Hide" : "Show"  }}
-					</button>
+					<div>
+						<button @click="toggleHide(item.id)" class="border bg-indigo-500 hover:bg-indigo-700 text-white p-1">
+							{{ !item.hide ? "Hide" : "Show"  }}
+						</button>
+						<input type="file" @change="handleImageUpload(item.id, $event)">
+						<img v-if="item.imagePreview" :src="item.imagePreview" alt="Preview">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -43,13 +48,18 @@ export default {
 			containerProps.ref,
 			() => {},
 			{
-				distance: 10
+				// distance: 10
 			}
 		)
 		return {data, list, containerProps, wrapperProps}
 	},
+	data() {
+		return {
+			imagePreview: null,
+		}
+	},
 	components: {
-        useInfiniteScroll,
+        // useInfiniteScroll,
         useVirtualList,
     },
 	props: {
@@ -60,15 +70,21 @@ export default {
 		toggleHide(id) {
 			store.dispatch('hideDevice', id);
 		},
-		...mapActions(['hideDevice']),
+		...mapActions(['hideDevice', 'updateDeviceImage']),
+		handleImageUpload(id, event) {
+			const file = event.target.files[0];
+			if (file) {
+				const reader = new FileReader();
+				reader.onload = () => {
+					this.imagePreview = reader.result;
+					store.dispatch('updateDeviceImage', {id: id, image: reader.result});
+				};
+				reader.readAsDataURL(file);
+			}
+		},
 	},
 	computed: {
 		...mapState(['user', 'loginError']),
 	},
 }
-
 </script>
-
-<style>
-
-</style>

@@ -68,3 +68,8 @@ export function trackDevices({ commit }) {
 export function hideDevice({ commit }, id) {
     commit('setHiddenDevices', id);
 }
+
+export function updateDeviceImage({ commit }, device) {
+    console.log("updateDeviceImage: ", device);
+    commit('setDeviceImage', device);
+}

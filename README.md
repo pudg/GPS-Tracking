@@ -48,3 +48,6 @@ The settings menu on the top left-hand side allows the user to:
  * `Save` all setting preferences and uploaded files to database.
 
 To inspect the database after any `save` operation visit [http://localhost:8000/api/database](http://localhost:8000/api/database)
+
+ * Only included for coding challenge transparency, this wouldn't make it in release.
+

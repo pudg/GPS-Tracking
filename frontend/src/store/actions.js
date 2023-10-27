@@ -51,7 +51,6 @@ export function userAuthenticate({ commit }, credentials) {
     })
     .catch((err) => {
         commit('setLoginError', "Invalid Email or Password.");
-        console.error(err);
     })
     .finally(() => {})
 }

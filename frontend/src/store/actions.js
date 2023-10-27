@@ -43,7 +43,6 @@ export function userAuthenticate({ commit }, credentials) {
 
     axios.post('http://localhost:8000/api/login', user, {headers: headers})
     .then((resp) => {
-        console.log("statusCode: ", resp.status);
         commit('setUser', user);
         commit('setLoginError', "");
         router.push({name: 'tracking'});

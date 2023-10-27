@@ -31,12 +31,11 @@
 
 <script>
 import { ref } from 'vue';
-import { useStore, mapState, mapActions } from 'vuex';
+import { useStore, mapState } from 'vuex';
 
 export default {
 	setup () {
 		const signup_form = ref({});
-		const register_form = ref({});
 		const store = useStore();
 
 		const handleRegisterClick = () => {
@@ -49,7 +48,6 @@ export default {
 
 		return {
 			signup_form,
-			register_form,
 			handleRegisterClick,
 		}
 	},
@@ -72,7 +70,6 @@ export default {
 form {
 	flex: 1 1 0%;
 	padding: 1rem;
-	/* padding: 8rem 1rem 1rem; */
 }
 
 form.register {
@@ -98,7 +95,6 @@ input {
 	background: none;
 
 	display: block;
-	/* width: 100%; */
 	max-width: 400px;
 	margin: 0 auto;
 	font-size: 1.5rem;

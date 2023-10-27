@@ -6,4 +6,8 @@ export default {
     registrationError: "",
     loginError: "",
     sortAsc: false,
+    navLinks: [
+        {name: 'Home', link: 'home'},
+        {name: 'Tracking', link: 'tracking'},
+    ],
 }

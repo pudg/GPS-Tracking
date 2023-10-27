@@ -16,6 +16,7 @@ import (
 
 var DB *gorm.DB
 
+// Creates sqlite3 .db file and sets database global variable.
 func ConnectDatabase() {
 	db, err := gorm.Open(sqlite.Open("onestep.db"), &gorm.Config{})
 

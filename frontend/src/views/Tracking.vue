@@ -12,7 +12,7 @@
             <GoogleMapLoader
             :trackDevices="trackDevices"
             :markers="trackedDevices"
-            :api-key="googleMapsAPIKey">
+            >
                 <template slot-scope="{ google, map }">
                     {{ map }}
                     {{ google }}
@@ -28,7 +28,6 @@ import DeviceList from '../components/DeviceList.vue';
 import Preferences from '../components/Preferences.vue';
 import { mapState, mapActions } from 'vuex'
 import store from '../store';
-import Login from './Login.vue'
 const mapConfig = {};
 export default {
     components: {
@@ -45,7 +44,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['user', 'trackedDevices', 'devices', 'googleMapsAPIKey']),
+        ...mapState(['user', 'trackedDevices', 'devices']),
         mapConfig() {
             return {
                 center: {lat: 0, lng: 0}
@@ -55,16 +54,13 @@ export default {
     methods: {
         ...mapActions(['userAuthenticate']),
         trackDevices() {
-            // this.track_devices = store.state.devices;
             store.commit('setTrackedDevices', store.state.devices)
         },
         allDevices() {
             store.dispatch('searchDevices');
             this.all_devices = store.state.devices;
         },
-        updateTrackedDevices(id) {
-            // console.log("Hiding device: ", id);
-        }
+        updateTrackedDevices(id) {}
     },
 }
 </script>

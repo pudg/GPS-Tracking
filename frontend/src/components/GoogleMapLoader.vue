@@ -20,6 +20,8 @@ import store from '../store';
 
 export default {
   name: 'App',
+  setup() {
+  },
   data() {
     return {
       center: {lat: 34.049229, lng: -118.456320},
@@ -27,7 +29,7 @@ export default {
   },
   props: {
     markers: []
-  }
+  },
 }
 </script>
 

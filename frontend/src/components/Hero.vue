@@ -31,7 +31,9 @@
                 class="inline-block font-extrabold p-4 m-1 text-lg
                 text-indigo-100 hover:text-white  transition-colors
                 duration-150 bg-indigo-700 rounded-lg focus:shadow-outline
-                hover:bg-indigo-800 text-center">Login</router-link>
+                hover:bg-indigo-800 text-center">
+                    Login
+                </router-link>
             </div>
         </div>
     </div>

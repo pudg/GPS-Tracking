@@ -13,20 +13,10 @@ import store from '../store'
 import { useStore, mapState, mapActions } from 'vuex'
 export default {
     setup() {
-        let ws = ref(null);
         const store = useStore();
-        const sendMsg = () => {
-            if (!ws) {
-                return;
-            }
-            ws.send(JSON.stringify({ "nelson": "hey" }));
-            return;
-        };
-
         const handleSortClick = () => {
             store.dispatch('deviceSort');
         };
-
         const savePreferences = () => {
             const preferences = {
                 user: store.state.user,
@@ -35,27 +25,8 @@ export default {
             };
             store.dispatch('saveUserPreferences', preferences);
         };
-
-        onMounted((event) => {
-            // ws = new WebSocket("ws://localhost:8000/api/devices");
-
-            // ws.onopen = (event) => {
-            //     console.log("ws open");
-            //     console.log(event);
-            // };
-            // ws.onclose = (event) => {
-            //     console.log("ws closed");
-            //     ws = null;
-            // };
-            // ws.onmessage = (event) => {
-            //     console.log("ws response: ", event.data);
-            // };
-            // ws.onerror = (event) => {
-            //     console.error("Error connecting ws. ");
-            // };
-        });
         return {
-            sendMsg, savePreferences, handleSortClick };
+            savePreferences, handleSortClick };
     },
     props: {
         trackDevices: Function,

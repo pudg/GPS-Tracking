@@ -47,9 +47,7 @@ export default {
 		useInfiniteScroll(
 			containerProps.ref,
 			() => {},
-			{
-				// distance: 10
-			}
+			{}
 		)
 		return {data, list, containerProps, wrapperProps}
 	},

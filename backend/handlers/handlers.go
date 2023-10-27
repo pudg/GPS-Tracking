@@ -44,20 +44,20 @@ func Login(c *gin.Context) {
 		r := Result{}
 		if err := ctx.ShouldBindJSON(&input); err != nil {
 			log.Println("Error binding: ", err)
-			r.Data = gin.H{"data": http.StatusText(400)}
+			r.Data = gin.H{"data": http.StatusText(http.StatusBadRequest)}
 			r.StatusCode = 400
 			ch <- r
 			return
 		}
 		user := models.User{}
 		if err := database.DB.Where("email = ?", input.Email).First(&user); err.Error != nil {
-			r.Data = gin.H{"data": http.StatusText(404)}
+			r.Data = gin.H{"data": http.StatusText(http.StatusNotFound)}
 			r.StatusCode = 404
 			ch <- r
 			return
 		}
 		if database.CheckPasswordHash(input.Password, user.Password) {
-			r.Data = gin.H{"data": http.StatusText(200)}
+			r.Data = gin.H{"data": http.StatusText(http.StatusOK)}
 			r.StatusCode = 200
 			ch <- r
 			return
@@ -78,7 +78,7 @@ func Register(c *gin.Context) {
 		r := Result{}
 		if err := ctx.ShouldBindJSON(&input); err != nil {
 			log.Println("Error Binding: ", err)
-			r.Data = gin.H{"data": http.StatusText(400)}
+			r.Data = gin.H{"data": http.StatusText(http.StatusBadRequest)}
 			r.StatusCode = 400
 			ch <- r
 			return
@@ -89,7 +89,7 @@ func Register(c *gin.Context) {
 			hashedPassword, err := database.HashPassword(input.Password)
 			if err != nil {
 				log.Fatal("Unable to hash password: ", err)
-				r.Data = gin.H{"data": http.StatusText(500)}
+				r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
 				r.StatusCode = 500
 				ch <- r
 				return
@@ -97,12 +97,12 @@ func Register(c *gin.Context) {
 			user.Email = input.Email
 			user.Password = hashedPassword
 			database.DB.Create(&user)
-			r.Data = gin.H{"data": http.StatusText(200)}
-			r.StatusCode = 200
+			r.Data = gin.H{"data": http.StatusText(http.StatusCreated)}
+			r.StatusCode = 201
 			ch <- r
 			return
 		}
-		r.Data = gin.H{"data": http.StatusText(400)}
+		r.Data = gin.H{"data": http.StatusText(http.StatusBadRequest)}
 		r.StatusCode = 400
 		ch <- r
 	}(c.Copy())
@@ -118,7 +118,7 @@ func Devices(c *gin.Context) {
 		resp, err := http.Get(URL + apiKey)
 		r := Result{}
 		if err != nil {
-			r.Data = gin.H{"data": http.StatusText(500)}
+			r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
 			r.StatusCode = 500
 			ch <- r
 			return
@@ -126,7 +126,7 @@ func Devices(c *gin.Context) {
 
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
-			r.Data = gin.H{"Data": http.StatusText(500)}
+			r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
 			r.StatusCode = 500
 			ch <- r
 			return
@@ -147,7 +147,7 @@ func UpdatePreferences(c *gin.Context) {
 		r := Result{}
 		if err := ctx.ShouldBindJSON(&input); err != nil {
 			log.Println("Bind: ", err.Error())
-			r.Data = gin.H{"data": http.StatusText(400)}
+			r.Data = gin.H{"data": http.StatusText(http.StatusBadRequest)}
 			r.StatusCode = 400
 			ch <- r
 			return
@@ -156,7 +156,7 @@ func UpdatePreferences(c *gin.Context) {
 		user := models.User{}
 		if err := database.DB.Where("email = ?", input.Email).First(&user); err.Error != nil {
 			log.Println("Invalid Email: ", err.Error)
-			r.Data = gin.H{"data": http.StatusText(404)}
+			r.Data = gin.H{"data": http.StatusText(http.StatusNotFound)}
 			r.StatusCode = 404
 			ch <- r
 			return
@@ -181,7 +181,7 @@ func ViewDatabase(c *gin.Context) {
 		r := Result{}
 		if err := database.DB.Model(&models.User{}).Preload("Preference").Find(&users).Error; err != nil {
 			log.Println("Finding users: ", err.Error())
-			r.Data = gin.H{"data": http.StatusText(500)}
+			r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
 			r.StatusCode = 500
 			ch <- r
 			return

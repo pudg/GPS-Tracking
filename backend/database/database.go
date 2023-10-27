@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"log"
 	"onestep/nelson/backend/models"
 
@@ -24,7 +23,6 @@ func ConnectDatabase() {
 	}
 
 	DB = db
-	fmt.Println("COMPLETE: Connected to database.")
 }
 
 func HashPassword(password string) (string, error) {

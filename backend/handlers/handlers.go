@@ -1,3 +1,8 @@
+// Package handlers implementes routines for processing incoming web requests.
+//
+// The handlers package should only be used when mapping route paths to
+// a respective function handler.
+
 package handlers
 
 import (
@@ -10,10 +15,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
+// URL for OneStep API endpoint.
 var URL = "https://track.onestepgps.com/v3/api/public/device?latest_point=true&api-key="
+
+// Maps status codes to their corresponding http status name.
 var statusCodeMap = map[int]int{
 	200: http.StatusOK,
 	201: http.StatusCreated,
@@ -24,11 +33,14 @@ var statusCodeMap = map[int]int{
 	500: http.StatusInternalServerError,
 }
 
+// A Result serves as the communication interface for a handler coroutine channel.
 type Result struct {
 	Data       gin.H
 	StatusCode int
 }
 
+// LoadEnvKey loads the project environment variable file, and returns the
+// specified variable.
 func LoadEnvKey(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -37,6 +49,26 @@ func LoadEnvKey(key string) string {
 	return os.Getenv(key)
 }
 
+// HashPassword encrypts and returns the hashed version of the specified password.
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
+
+// CheckPasswordHash checks for password equality between the given un-encrypted
+// and hashed passwords.
+func CheckPasswordHash(password string, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
+// Login authenticates the user if a matching record exists in the database.
+//
+// On Success, Login returns status code of 200 and status text OK.
+//
+// On Bad Request, Login returns a status code of 400 and status text BadRequest.
+//
+// On Invalid Credentials, Login returns a status code of 404 and status text Not Found
 func Login(c *gin.Context) {
 	ch := make(chan Result)
 	go func(ctx *gin.Context) {
@@ -56,7 +88,7 @@ func Login(c *gin.Context) {
 			ch <- r
 			return
 		}
-		if database.CheckPasswordHash(input.Password, user.Password) {
+		if CheckPasswordHash(input.Password, user.Password) {
 			r.Data = gin.H{"data": http.StatusText(http.StatusOK)}
 			r.StatusCode = 200
 			ch <- r
@@ -71,6 +103,15 @@ func Login(c *gin.Context) {
 	c.JSON(statusCodeMap[result.StatusCode], result.Data)
 }
 
+// Register creates a new User record with the specified information.
+//
+// On Success, Register returns a status code of 200 and status text OK.
+//
+// On Bad Request, Register returns a status code of 400 and status text BadRequest.
+//
+// On Not Found, Register returns a status code of 404 and status text Not Found.
+//
+// On Internal Error, Register returns a status code of 500 and status text InternalServerError.
 func Register(c *gin.Context) {
 	ch := make(chan Result)
 	go func(ctx *gin.Context) {
@@ -86,7 +127,7 @@ func Register(c *gin.Context) {
 
 		user := models.User{}
 		if err := database.DB.Where("email = ?", input.Email).First(&user); err.Error != nil {
-			hashedPassword, err := database.HashPassword(input.Password)
+			hashedPassword, err := HashPassword(input.Password)
 			if err != nil {
 				log.Fatal("Unable to hash password: ", err)
 				r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
@@ -111,6 +152,11 @@ func Register(c *gin.Context) {
 	c.JSON(statusCodeMap[result.StatusCode], result.Data)
 }
 
+// Devices calls the OneStep API and returns a list of tracking devices.
+//
+// On Success, Devices returns a status code of 200 and status text of OK.
+//
+// On Internal Error, Devices returns a status code of 500 and status text of InternalServerError.
 func Devices(c *gin.Context) {
 	ch := make(chan Result)
 	go func(ctx *gin.Context) {
@@ -118,6 +164,7 @@ func Devices(c *gin.Context) {
 		resp, err := http.Get(URL + apiKey)
 		r := Result{}
 		if err != nil {
+			//Error completing the external API call.
 			r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
 			r.StatusCode = 500
 			ch <- r
@@ -126,6 +173,7 @@ func Devices(c *gin.Context) {
 
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
+			//Error reading the API response body.
 			r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
 			r.StatusCode = 500
 			ch <- r
@@ -140,6 +188,13 @@ func Devices(c *gin.Context) {
 	c.JSON(statusCodeMap[result.StatusCode], result.Data)
 }
 
+// UpdatePreferences saves user tracking settings, and uploaded thumbnails to the database.
+//
+// On Success, UpdatePreferences returns a status code of 200 and status text of OK.
+//
+// On Bad Request, UpdatePreferences returns a status code of 400 and status text of BadRequest.
+//
+// On Not Found, UpdatePreferences returns a status code of 404 and status text of Not Found.
 func UpdatePreferences(c *gin.Context) {
 	ch := make(chan Result)
 	go func(ctx *gin.Context) {
@@ -174,6 +229,9 @@ func UpdatePreferences(c *gin.Context) {
 	c.JSON(statusCodeMap[result.StatusCode], result.Data)
 }
 
+// ViewDatabase is only for debugging/transparency purposes.
+//
+// ViewDatabase returns a list of existing user records within the database.
 func ViewDatabase(c *gin.Context) {
 	ch := make(chan Result)
 	go func(ctx *gin.Context) {

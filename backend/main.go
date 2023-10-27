@@ -6,6 +6,8 @@ import (
 	"onestep/nelson/backend/routes"
 )
 
+// main creates router, connects to database, initializes router middlware,
+// router endpoints, and serves on localhost:8000
 func main() {
 	router := routes.InitRouter()
 	database.ConnectDatabase()

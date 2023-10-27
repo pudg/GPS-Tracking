@@ -1,3 +1,8 @@
+// Package middleware implements initialization routines for gin framework middleware.
+//
+// The middleware package should only be used during the configuration of backend
+// allowed origins and operations.
+
 package middleware
 
 import (
@@ -7,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// InitMiddleWare adds Logging, Recovery, and CORS configuration to the specified router.
 func InitMiddleware(router *gin.Engine) {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())

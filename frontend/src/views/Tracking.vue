@@ -12,7 +12,7 @@
             <GoogleMapLoader
             :trackDevices="trackDevices"
             :markers="trackedDevices"
-            api-key="AIzaSyAEzJXuznJHAQcdCBA_HcxdRYNuA3MJuDo">
+            :api-key="googleMapsAPIKey">
                 <template slot-scope="{ google, map }">
                     {{ map }}
                     {{ google }}
@@ -45,7 +45,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['user', 'trackedDevices', 'devices']),
+        ...mapState(['user', 'trackedDevices', 'devices', 'googleMapsAPIKey']),
         mapConfig() {
             return {
                 center: {lat: 0, lng: 0}

@@ -1,3 +1,4 @@
+// Package tests the API endpoints for appropriate status codes.
 package main
 
 import (

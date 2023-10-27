@@ -1,10 +1,15 @@
+// Package database implements utulity routines for manipulating
+// sqlite3 database connection.
+//
+// The package should only be used during the initial setup steps
+// to establish database connection.
+
 package database
 
 import (
 	"log"
 	"onestep/nelson/backend/models"
 
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -23,14 +28,4 @@ func ConnectDatabase() {
 	}
 
 	DB = db
-}
-
-func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes), err
-}
-
-func CheckPasswordHash(password string, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
 }

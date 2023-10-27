@@ -29,3 +29,4 @@ coverage
 .vscode
 .env
 onestep.db
+BUGS.md

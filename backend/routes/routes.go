@@ -24,6 +24,7 @@ func InitFileLogging() {
 func InitRouter() *gin.Engine {
 	InitFileLogging()
 	router := gin.New()
+	router.SetTrustedProxies(nil)
 	return router
 }
 
@@ -32,5 +33,5 @@ func InitRoutes(router *gin.Engine) {
 	router.POST("/api/register", handlers.Register)
 	router.GET("/api/devices", handlers.Devices)
 	router.PUT("/api/preferences", handlers.UpdatePreferences)
-	router.GET("/api/test", handlers.Test)
+	router.GET("/api/database", handlers.ViewDatabase)
 }

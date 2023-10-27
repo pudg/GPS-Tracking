@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -10,13 +9,25 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 )
 
-var upgrader = websocket.Upgrader{}
 var URL = "https://track.onestepgps.com/v3/api/public/device?latest_point=true&api-key="
+var statusCodeMap = map[int]int{
+	200: http.StatusOK,
+	201: http.StatusCreated,
+	302: http.StatusFound,
+	400: http.StatusBadRequest,
+	401: http.StatusUnauthorized,
+	404: http.StatusNotFound,
+	500: http.StatusInternalServerError,
+}
+
+type Result struct {
+	Data       gin.H
+	StatusCode int
+}
 
 func LoadEnvKey(key string) string {
 	err := godotenv.Load(".env")
@@ -27,140 +38,142 @@ func LoadEnvKey(key string) string {
 }
 
 func Login(c *gin.Context) {
-	var input models.CreateUser
-
-	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("Bind: ", err)
-		c.JSON(http.StatusBadRequest, gin.H{"data": err.Error()})
-		return
-	}
-
-	user := models.User{}
-	if result := database.DB.Where("email = ?", input.Email).First(&user); result.Error != nil {
-		log.Println("Invalid authentication: ", result.Error)
-		c.JSON(http.StatusBadRequest, gin.H{"data": "Invalid email or password"})
-		return
-	}
-
-	if database.CheckPasswordHash(input.Password, user.Password) {
-		log.Println("Successful login: ", user.Email)
-		c.JSON(http.StatusOK, gin.H{"data": "Success"})
-		return
-	}
-
-	log.Println("Failed login attempty: ")
-	c.JSON(http.StatusOK, gin.H{"data": "Invalid email or password"})
+	ch := make(chan Result)
+	go func(ctx *gin.Context) {
+		var input models.User
+		r := Result{}
+		if err := ctx.ShouldBindJSON(&input); err != nil {
+			log.Println("Error binding: ", err)
+			r.Data = gin.H{"data": http.StatusText(400)}
+			r.StatusCode = 400
+			ch <- r
+			return
+		}
+		user := models.User{}
+		if err := database.DB.Where("email = ?", input.Email).First(&user); err.Error != nil {
+			r.Data = gin.H{"data": "Invalid Email or Password."}
+			r.StatusCode = 400
+			ch <- r
+			return
+		}
+		if database.CheckPasswordHash(input.Password, user.Password) {
+			r.Data = gin.H{"data": http.StatusText(200)}
+			r.StatusCode = 200
+			ch <- r
+			return
+		}
+		r.Data = gin.H{"data": "Invalid Email or Password."}
+		r.StatusCode = 400
+		ch <- r
+	}(c.Copy())
+	result := <-ch
+	c.JSON(statusCodeMap[result.StatusCode], result.Data)
 }
 
 func Register(c *gin.Context) {
-	var input models.CreateUser
-	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("Bind: ", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	ch := make(chan gin.H)
+	go func(ctx *gin.Context) {
+		var input models.CreateUser
+		if err := ctx.ShouldBindJSON(&input); err != nil {
+			log.Println("Bind: ", err)
+			ch <- gin.H{"data": "Error"}
+			return
+		}
 
-	hashedPassword, err := database.HashPassword(input.Password)
-	if err != nil {
-		log.Fatal("Unable to hash password: ", err)
-		return
-	}
+		user := models.User{}
+		if err := database.DB.Where("email = ?", input.Email).First(&user); err.Error != nil {
+			hashedPassword, err := database.HashPassword(input.Password)
+			if err != nil {
+				log.Fatal("Unable to hash password: ", err)
+				ch <- gin.H{"data": "Error"}
+				return
+			}
+			user.Email = input.Email
+			user.Password = hashedPassword
+			database.DB.Create(&user)
+			ch <- gin.H{"data": "Success"}
+			return
+		}
+		ch <- gin.H{"data": "Error"}
+	}(c.Copy())
 
-	user := models.User{
-		Email:    input.Email,
-		Password: hashedPassword,
-	}
-
-	if result := database.DB.Where("email = ?", user.Email).First(&user); result.Error != nil {
-		log.Println("CREATING USER")
-		database.DB.Create(&user)
-		c.JSON(http.StatusCreated, gin.H{"data": "Success"})
-		return
-	}
-
-	log.Println("USER EXISTS")
-	c.JSON(http.StatusBadRequest, gin.H{"data": "Email in use."})
+	c.JSON(http.StatusOK, <-ch)
 }
 
 func Devices(c *gin.Context) {
-	apiKey := LoadEnvKey("OS_API_KEY")
-	resp, err := http.Get(URL + apiKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	data := string(body)
-	c.JSON(http.StatusOK, gin.H{
-		"data": data,
-	})
-}
-
-func DevicesOld(c *gin.Context) {
-	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
-	if err != nil {
-		log.Print("upgrade: ", err)
-		return
-	}
-
-	defer conn.Close()
-	apiKey := LoadEnvKey("OS_API_KEY")
-	fmt.Println(apiKey)
-	for {
-		msgType, msg, err := conn.ReadMessage()
+	result := make(chan gin.H)
+	go func(ctx *gin.Context) {
+		apiKey := LoadEnvKey("OS_API_KEY")
+		resp, err := http.Get(URL + apiKey)
 		if err != nil {
-			log.Println("read: ", err)
-			break
+			result <- gin.H{"data": "Error"}
+			return
 		}
-		log.Printf("recv: %s", msg)
-		err = conn.WriteMessage(msgType, msg)
-		if err != nil {
-			log.Println("write: ", err)
-			break
-		}
-	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": "TODO: Implement devices handler...",
-	})
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			result <- gin.H{
+				"data": err.Error(),
+			}
+			return
+		}
+
+		result <- gin.H{"data": string(body)}
+	}(c.Copy())
+	c.JSON(http.StatusOK, <-result)
 }
 
 func UpdatePreferences(c *gin.Context) {
-	var input models.CreateUser
-	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("Bind: ", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	result := make(chan gin.H)
+	go func(ctx *gin.Context) {
+		var input models.CreateUser
+		if err := ctx.ShouldBindJSON(&input); err != nil {
+			log.Println("Bind: ", err.Error())
+			result <- gin.H{
+				"data": err.Error(),
+			}
+			return
+		}
 
-	user := models.User{}
-	if result := database.DB.Where("email = ?", input.Email).First(&user); result.Error != nil {
-		log.Println("Invalid email: ", result.Error)
-		c.JSON(http.StatusBadRequest, gin.H{"data": "Invalid email or password"})
-		return
-	}
+		user := models.User{}
+		if err := database.DB.Where("email = ?", input.Email).First(&user); err.Error != nil {
+			log.Println("Invalid Email: ", err.Error)
+			result <- gin.H{
+				"data": "Invalid Email or Password.",
+			}
+			return
+		}
 
-	user.Preference.SortAsc = input.Preference.SortAsc
-	user.Preference.Devices = input.Preference.Devices
-	database.DB.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
-	c.JSON(http.StatusOK, gin.H{"data": user})
+		user.Preference.SortAsc = input.Preference.SortAsc
+		user.Preference.Devices = input.Preference.Devices
+		database.DB.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
+		result <- gin.H{
+			"data":          input,
+			"requestedPath": ctx.Request.URL.Path,
+		}
+	}(c.Copy())
+	c.JSON(http.StatusOK, <-result)
 }
 
-func Test(c *gin.Context) {
-	var users []models.User
+func ViewDatabase(c *gin.Context) {
+	result := make(chan gin.H)
+	go func(ctx *gin.Context) {
+		var users []models.User
 
-	if err := database.DB.Model(&models.User{}).Preload("Preference").Find(&users).Error; err != nil {
-		log.Panicln("Finding users: ", err.Error())
-		return
-	}
+		if err := database.DB.Model(&models.User{}).Preload("Preference").Find(&users).Error; err != nil {
+			log.Println("Finding users: ", err.Error())
+			result <- gin.H{
+				"data": "Database error.",
+			}
+			return
+		}
+		result <- gin.H{
+			"data":          users,
+			"requestedPath": ctx.Request.URL.Path,
+		}
+	}(c.Copy())
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": users,
-	})
+	c.JSON(http.StatusOK, <-result)
 }
 
 func Preferences(c *gin.Context) {

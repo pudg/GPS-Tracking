@@ -43,11 +43,11 @@ export function userAuthenticate({ commit }, credentials) {
 
     axios.post('http://localhost:8000/api/login', user, {headers: headers})
     .then((resp) => {
-        if (resp.status === 200) {
-            commit('setUser', user);
-            commit('setLoginError', "");
-            router.push({name: 'tracking'});
-        }
+        console.log("statusCode: ", resp.status);
+        commit('setUser', user);
+        commit('setLoginError', "");
+        router.push({name: 'tracking'});
+
     })
     .catch((err) => {
         commit('setLoginError', "Invalid Email or Password.");
@@ -66,7 +66,7 @@ export function userRegistration({ commit }, credentials) {
     }
     axios.post('http://localhost:8000/api/register', user, {headers: headers})
     .then((resp) => {
-        if (resp.status === 201) {
+        if (resp.status === 200) {
             commit('setUser', user);
             commit('setRegistrationError', "");
             router.push({name: 'tracking'});

@@ -37,22 +37,22 @@ export default {
         };
 
         onMounted((event) => {
-            ws = new WebSocket("ws://localhost:8000/devices");
+            // ws = new WebSocket("ws://localhost:8000/api/devices");
 
-            ws.onopen = (event) => {
-                console.log("ws open");
-                console.log(event);
-            };
-            ws.onclose = (event) => {
-                console.log("ws closed");
-                ws = null;
-            };
-            ws.onmessage = (event) => {
-                console.log("ws response: ", event.data);
-            };
-            ws.onerror = (event) => {
-                console.error("Error connecting ws. ");
-            };
+            // ws.onopen = (event) => {
+            //     console.log("ws open");
+            //     console.log(event);
+            // };
+            // ws.onclose = (event) => {
+            //     console.log("ws closed");
+            //     ws = null;
+            // };
+            // ws.onmessage = (event) => {
+            //     console.log("ws response: ", event.data);
+            // };
+            // ws.onerror = (event) => {
+            //     console.error("Error connecting ws. ");
+            // };
         });
         return {
             sendMsg, savePreferences, handleSortClick };

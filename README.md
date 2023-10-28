@@ -7,7 +7,7 @@ Clone or unzip project directory.
 ### Install
 Step into the backend directory of the project.
 
-    cd GPS-tracking/backend
+    cd GPS-Tracking/backend
 
 Install required packages.
 
@@ -21,7 +21,7 @@ Launch the backend server.
 ### Install
 Open a separate terminal window and step into frontend directory of the project.
 
-    cd GPS-tracking/frontend
+    cd GPS-Tracking/frontend
 
 Install required packages using `npm`
 

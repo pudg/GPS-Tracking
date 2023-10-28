@@ -51,3 +51,5 @@ To inspect the database after any `save` operation visit [http://localhost:8000/
 
  * Only included for coding challenge transparency, this wouldn't make it in release.
 
+## API
+View Postman generated [API documentation.](https://documenter.getpostman.com/view/29003440/2s9YRGwoae)

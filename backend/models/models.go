@@ -35,6 +35,6 @@ type CreateUser struct {
 type Preference struct {
 	gorm.Model
 	UserID  uint           `json:"userID"`
-	SortAsc bool           `json:"sort" gorm:"default:false"`
+	SortAsc bool           `json:"sortAsc" gorm:"default:false"`
 	Devices pq.StringArray `json:"devices" gorm:"type:text[]"`
 }

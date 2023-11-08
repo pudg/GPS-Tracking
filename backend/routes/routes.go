@@ -35,6 +35,7 @@ func InitRouter() *gin.Engine {
 // InitRoutes maps API endpoints to corresponding function handlers.
 func InitRoutes(router *gin.Engine) {
 	router.POST("/api/login", handlers.Login)
+	router.POST("/api/logout", handlers.Logout)
 	router.POST("/api/register", handlers.Register)
 	router.GET("/api/devices", handlers.Devices)
 	router.PUT("/api/preferences", handlers.UpdatePreferences)

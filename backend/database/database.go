@@ -65,7 +65,7 @@ func AuthenticateUser(input models.User) Result {
 		return r
 	}
 	if CheckPasswordHash(input.Password, user.Password) {
-		r.Data = gin.H{"data": http.StatusText(http.StatusOK)}
+		r.Data = gin.H{"data": user.ID}
 		r.StatusCode = 200
 		return r
 	}
@@ -83,7 +83,6 @@ func CreateUser(input models.CreateUser) Result {
 	if err := DB.Where("email = ?", input.Email).First(&user); err.Error != nil {
 		hashedPassword, err := HashPassword(input.Password)
 		if err != nil {
-			log.Fatal("Unable to hash password: ", err)
 			r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
 			r.StatusCode = 500
 			return r
@@ -107,7 +106,6 @@ func UpdateUserPreferences(input models.CreateUser) Result {
 	r := Result{}
 	user := models.User{}
 	if err := DB.Where("email = ?", input.Email).First(&user); err.Error != nil {
-		log.Println("Invalid Email: ", err.Error)
 		r.Data = gin.H{"data": http.StatusText(http.StatusNotFound)}
 		r.StatusCode = 404
 		return r
@@ -129,7 +127,6 @@ func AllUsers() Result {
 	var users []models.User
 	r := Result{}
 	if err := DB.Model(&models.User{}).Preload("Preference").Find(&users).Error; err != nil {
-		log.Println("Finding Users: ", err.Error())
 		r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
 		r.StatusCode = 500
 		return r

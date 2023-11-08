@@ -6,6 +6,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 	"onestep/nelson/backend/models"
 	"os"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -54,18 +56,64 @@ func Login(c *gin.Context) {
 		var input models.User
 		r := database.Result{}
 		if err := ctx.ShouldBindJSON(&input); err != nil {
-			log.Println("Error binding: ", err)
 			r.Data = gin.H{"data": http.StatusText(http.StatusBadRequest)}
 			r.StatusCode = 400
 			ch <- r
 			return
 		}
 		r = database.AuthenticateUser(input)
+		if r.StatusCode == 200 {
+			session := sessions.Default(c)
+			bytes, err := json.Marshal(input)
+			if err != nil {
+				r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
+				r.StatusCode = 500
+				ch <- r
+				return
+			}
+			userID := r.Data["data"]
+			session.Set(userID, bytes)
+			err = session.Save()
+			if err != nil {
+				r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
+				r.StatusCode = 500
+				ch <- r
+				return
+			}
+			r.Data = gin.H{"data": userID}
+		}
 		ch <- r
 	}(c.Copy())
 
 	result := <-ch
 	c.JSON(statusCodeMap[result.StatusCode], result.Data)
+}
+
+// Logout handles the cleanup process for removing a users active session.
+//
+// On Success, Logout reteurns a status code of 200 and status text OK.
+//
+// On Internal Error, Logout returns a status code of 500, and status text InternalServerError.
+func Logout(c *gin.Context) {
+	ch := make(chan database.Result)
+	go func() {
+		r := database.Result{}
+		session := sessions.Default(c)
+		session.Clear()
+		session.Options(sessions.Options{MaxAge: -1})
+		err := session.Save()
+		if err != nil {
+			r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
+			r.StatusCode = 500
+			ch <- r
+			return
+		}
+		r.Data = gin.H{"data": http.StatusText(http.StatusOK)}
+		r.StatusCode = 200
+		ch <- r
+	}()
+	result := <-ch
+	c.JSON(result.StatusCode, result.Data)
 }
 
 // Register handles the validation and authentication process for register requests.
@@ -83,7 +131,6 @@ func Register(c *gin.Context) {
 		var input models.CreateUser
 		r := database.Result{}
 		if err := ctx.ShouldBindJSON(&input); err != nil {
-			log.Println("Error Binding: ", err)
 			r.Data = gin.H{"data": http.StatusText(http.StatusBadRequest)}
 			r.StatusCode = 400
 			ch <- r
@@ -105,9 +152,16 @@ func Register(c *gin.Context) {
 func Devices(c *gin.Context) {
 	ch := make(chan database.Result)
 	go func(ctx *gin.Context) {
+		r := database.Result{}
+		if _, err := ctx.Cookie("ossession"); err != nil {
+			r.Data = gin.H{"data": http.StatusText(http.StatusUnauthorized)}
+			r.StatusCode = 401
+			ch <- r
+			return
+		}
+
 		apiKey := LoadEnvKey("OS_API_KEY")
 		resp, err := http.Get(URL + apiKey)
-		r := database.Result{}
 		if err != nil {
 			//Error completing the external API call.
 			r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
@@ -124,6 +178,7 @@ func Devices(c *gin.Context) {
 			ch <- r
 			return
 		}
+
 		r.Data = gin.H{"data": string(body)}
 		r.StatusCode = 200
 		ch <- r
@@ -143,15 +198,43 @@ func Devices(c *gin.Context) {
 func UpdatePreferences(c *gin.Context) {
 	ch := make(chan database.Result)
 	go func(ctx *gin.Context) {
-		var input models.CreateUser
 		r := database.Result{}
-		if err := ctx.ShouldBindJSON(&input); err != nil {
-			log.Println("Bind: ", err.Error())
+		if _, err := ctx.Cookie("ossession"); err != nil {
+			r.Data = gin.H{"data": http.StatusText(http.StatusUnauthorized)}
+			r.StatusCode = 401
+			ch <- r
+			return
+		}
+
+		var preferences models.Preference
+		if err := ctx.ShouldBindJSON(&preferences); err != nil {
 			r.Data = gin.H{"data": http.StatusText(http.StatusBadRequest)}
 			r.StatusCode = 400
 			ch <- r
 			return
 		}
+
+		user := models.User{}
+		session := sessions.Default(ctx)
+		userCredentials := session.Get(preferences.UserID)
+		if userCredentials == nil {
+			r.Data = gin.H{"data": http.StatusText(http.StatusUnauthorized)}
+			r.StatusCode = 401
+			ch <- r
+			return
+		}
+		err := json.Unmarshal(userCredentials.([]byte), &user)
+		if err != nil {
+			r.Data = gin.H{"data": http.StatusText(http.StatusInternalServerError)}
+			r.StatusCode = 500
+			ch <- r
+			return
+		}
+
+		var input models.CreateUser
+		input.Email = user.Email
+		input.Password = user.Password
+		input.Preference = preferences
 		r = database.UpdateUserPreferences(input)
 		ch <- r
 	}(c.Copy())

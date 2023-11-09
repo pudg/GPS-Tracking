@@ -2,13 +2,13 @@
     <div v-if="user" class="flex flex-col md:flex-row justify-center items-center">
         <div class="
             p-0 text-center
-            w-full md:w-1/3 h-96 md:h-screen
+            w-full md:w-1/3
             justify-center items-center
             ">
             <Preferences :allDevices="allDevices" :trackDevices="trackDevices"/>
             <DeviceList :info="devices" :updateTrackedDevices="updateTrackedDevices"/>
         </div>
-        <div class="p-1 text-center w-full md:w-2/3 h-full md:h-screen">
+        <div class="p-1 text-center w-full md:w-2/3">
             <GoogleMapLoader
             :trackDevices="trackDevices"
             :markers="trackedDevices"

@@ -35,6 +35,7 @@ export default {
 
 <style>
 .vue-map-container .vue-map {
-    height: 99.5vh;
+    /* height: 99.5vh; */
+    height: 85vh;
 }
 </style>

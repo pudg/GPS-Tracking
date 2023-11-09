@@ -1,5 +1,5 @@
 <template>
-	<div v-bind="containerProps" class=" h-[93.5%] p-2 rounded">
+	<div v-bind="containerProps" class=" h-[80vh] p-2 rounded">
 		<!--TODO: add back v-bind="wrapperProps"-->
 		<div  class="max-w-sm mx-auto">
 			<div 

@@ -82,6 +82,7 @@ export function userRegistration({ commit }, credentials) {
     axios.post('http://localhost:8000/api/register', user, {headers: headers})
     .then((resp) => {
         if (resp.status === 201) {
+            commit('setLoginError', "");
             commit('setRegistrationError', "");
             router.push({name: 'login'});
         }

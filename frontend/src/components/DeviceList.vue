@@ -4,7 +4,6 @@
 		<div  class="max-w-sm mx-auto">
 			<div 
 				v-for="item in info"
-
 				class="rounded-lg flex flex-col px-4 py-2 justify-center mb-2
 				border-neutral-600 shadow"			>
 				<div class="flex flex-col justify-center items-center">

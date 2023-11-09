@@ -15,7 +15,6 @@ import (
 	"github.com/gin-contrib/sessions"
 	gormsessions "github.com/gin-contrib/sessions/gorm"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 )
 
@@ -47,15 +46,10 @@ func InitMiddleware(router *gin.Engine) {
 	}))
 }
 
+// InitSessionManagement adds Cooki-Session management for logged in user authentication.
 func InitSessionManagement(router *gin.Engine) {
 	cookieSecret := LoadEnvKey("COOKIE_SECRET_KEY")
 	store := gormsessions.NewStore(database.DB, true, []byte(cookieSecret))
-	store.Options(sessions.Options{MaxAge: 60})
+	store.Options(sessions.Options{MaxAge: 3600})
 	router.Use(sessions.Sessions("ossession", store))
-}
-
-func GenerateToken() (string, error) {
-	key := LoadEnvKey("TOKEN_SECRET_KEY")
-	token := jwt.New(jwt.SigningMethodHS256)
-	return token.SignedString([]byte(key))
 }

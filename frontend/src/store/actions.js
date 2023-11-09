@@ -1,7 +1,9 @@
 import axios from 'axios';
 import router from '../router';
-import store from '../store';
 
+const axiosInstance = axios.create({
+    withCredentials: true
+});
 
 export function saveUserPreferences({ commit }, preferences) {
     let devs = preferences.devices.map((dev) => {
@@ -11,21 +13,17 @@ export function saveUserPreferences({ commit }, preferences) {
             image: dev.imagePreview,
         });
     });
-    const data = {
-        email: preferences.user.email,
-        password: preferences.user.password,
-        preference: {
-            sortAsc: preferences.sort,
-            devices: devs,
-        }
+    const prefs = {
+        userID: preferences.user,
+        sortAsc: preferences.sort,
+        devices: devs,
     };
-
 
     const headers = {
         'Content-Type': 'application/json'
     };
 
-    axios.put("http://localhost:8000/api/preferences", data, {headers: headers})
+    axiosInstance.put("http://localhost:8000/api/preferences", prefs, {headers: headers})
     .then((resp) => {})
     .catch(err => console.error(err))
     .finally(() => {})
@@ -38,19 +36,38 @@ export function userAuthenticate({ commit }, credentials) {
     };
 
     const headers = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
     };
 
-    axios.post('http://localhost:8000/api/login', user, {headers: headers})
+    axiosInstance.post('http://localhost:8000/api/login', user, {headers: headers})
     .then((resp) => {
-        commit('setUser', user);
+        localStorage.setItem("userID", resp.data.data);
+        commit('setUser', resp.data.data);
         commit('setLoginError', "");
         router.push({name: 'tracking'});
-
     })
     .catch((err) => {
         commit('setLoginError', "Invalid Email or Password.");
     })
+    .finally(() => {})
+}
+
+export function userLogout({ commit }, credentials) {
+    const data = {
+        userID: credentials
+    }
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+
+    axiosInstance.post('http://localhost:8000/api/logout', data, {headers: headers})
+    .then((resp) => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("userDevices");
+        commit('unsetUser');
+        commit('clearDevices');
+    })
+    .catch((err) => {})
     .finally(() => {})
 }
 
@@ -65,9 +82,8 @@ export function userRegistration({ commit }, credentials) {
     axios.post('http://localhost:8000/api/register', user, {headers: headers})
     .then((resp) => {
         if (resp.status === 201) {
-            commit('setUser', user);
             commit('setRegistrationError', "");
-            router.push({name: 'tracking'});
+            router.push({name: 'login'});
         }
     })
     .catch((err) => {
@@ -77,16 +93,12 @@ export function userRegistration({ commit }, credentials) {
 }
 
 export function searchDevices({ commit }) {
-    axios.get('http://localhost:8000/api/devices')
+    axiosInstance.get('http://localhost:8000/api/devices')
     .then((resp) => {
         commit('setDeviceList', JSON.parse(resp.data.data));
     })
     .catch(err => console.error(err))
     .finally(() => {})
-}
-
-export function userLogout({ commit }) {
-    commit('unsetUser')
 }
 
 export function trackDevices({ commit }) {
@@ -103,4 +115,8 @@ export function updateDeviceImage({ commit }, device) {
 
 export function deviceSort({ commit }) {
     commit('setDeviceSort')
+}
+
+export function persistUser({ commit }, user) {
+    commit('setUser', user);
 }

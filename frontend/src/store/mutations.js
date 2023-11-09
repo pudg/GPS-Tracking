@@ -14,6 +14,11 @@ export function setDeviceList(state, devices) {
         }
     });
     state.devices = devs;
+    localStorage.setItem("userDevices", JSON.stringify(devs));
+}
+
+export function reloadDeviceList(state, devices) {
+    state.devices = devices;
 }
 
 export function setTrackedDevices(state, devices) {
@@ -26,6 +31,13 @@ export function setUser(state, user) {
 
 export function unsetUser(state) {
     state.user = null;
+    localStorage.clear();
+}
+
+export function clearDevices(state) {
+    state.devices = [];
+    state.hiddenDevices = {};
+    state.trackedDevices = [];
 }
 
 export function setTrack(status) {
@@ -68,6 +80,7 @@ export function setDeviceImage(state, device) {
             break;
         }
     }
+    localStorage.setItem("userDevices", JSON.stringify(state.devices));
 }
 
 export function setDeviceSort(state) {

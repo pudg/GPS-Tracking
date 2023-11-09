@@ -47,7 +47,7 @@ export default {
         };
 
         const logOut = () => {
-            store.dispatch('userLogout');
+            store.dispatch('userLogout', store.state.user);
         }
 
         return { open, toggleOpen, logOut };
